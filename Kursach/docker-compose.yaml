@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  django-app:
+    build: .
+    depends_on:
+      - dpgadmin
+    ports:
+      - 8000:8000
+
+  dpgadmin:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123321
+      POSTGRES_DB: test
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  
+  adminer:
+    image: adminer
+    depends_on:
+      - dpgadmin
+    ports:
+      - 8080:8080
+
+volumes:
+  pgdata:
